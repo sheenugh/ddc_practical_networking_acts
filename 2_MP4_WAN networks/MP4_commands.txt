@@ -1,0 +1,240 @@
+----------------ROUTER----------------
+====STEP 1
+[SIR]
+ena
+conf t
+host SIR
+line con 0
+pass delima
+login
+line vty 0 15
+pass sheenamae
+login
+exit
+ena sec sheen
+banner motd # No to Ghost Project Flood Control #
+ser pass
+exit
+copy run start
+
+
+int g0/0
+ip add 192.168.1.1 255.255.255.0
+no sh
+
+int s0/0/0
+ip add 100.100.100.1 255.255.255.252
+clock rate 64000
+no sh
+exit
+
+
+router rip
+version 2
+net 192.168.1.0
+net 100.100.100.0
+no auto-sum
+end
+write
+
+
+[JAKE]
+ena
+conf t
+host JAKE
+line con 0
+pass delima
+login
+line vty 0 15
+pass sheenamae
+login
+exit
+ena sec sheen
+banner motd # No to Ghost Project Flood Control #
+ser pass
+exit
+copy run start
+
+
+int g0/0
+ip add 172.16.0.1 255.255.0.0
+no sh
+
+int s0/0/1
+ip add 100.100.100.0 255.255.255.252
+clock rate 64000
+no sh
+exit
+
+int s0/0/0
+ip add 50.50.50.0 255.0.0.0
+clock rate 64000
+no sh
+exit
+
+
+router rip
+version 2
+net 172.16.0.0
+net 100.100.100.0
+net 50.50.50.0
+no auto-sum
+end
+write
+
+
+
+[POGI]
+ena
+conf t
+host POGI
+line con 0
+pass delima
+login
+line vty 0 15
+pass sheenamae
+login
+exit
+ena sec sheen
+banner motd # No to Ghost Project Flood Control #
+ser pass
+exit
+copy run start
+
+
+int g0/0
+ip add 172.31.0.1 255.255.0.0
+no sh
+
+int s0/0/1
+ip add 50.50.50.0 255.0.0.0
+clock rate 64000
+no sh
+exit
+
+int s0/0/0
+ip add 150.150.150.1 255.255.0.0
+clock rate 64000
+no sh
+exit
+
+
+router rip
+version 2
+net 172.31.0.0
+net 50.50.50.0
+net 150.150.150.0
+no auto-sum
+end
+write
+
+
+
+[GWAPO]
+ena
+conf t
+host GWAPO
+line con 0
+pass delima
+login
+line vty 0 15
+pass sheenamae
+login
+exit
+ena sec sheen
+banner motd # No to Ghost Project Flood Control #
+ser pass
+exit
+copy run start
+
+int g0/0
+ip add 10.0.0.0 255.0.0.0
+no sh
+
+int s0/0/1
+ip add 150.150.150.2 255.255.0.0
+clock rate 64000
+no sh
+exit
+
+
+router rip
+version 2
+net 10.0.0.0
+net 150.150.150.0
+no auto-sum
+end
+write
+
+
+----------------SWITCH----------------
+===STEP 2
+[BBM]
+ena
+conf t
+host BBM
+line con 0
+pass delima
+login
+line vty 0 15
+pass sheenamae
+login
+exit
+ena sec sheen
+banner motd # No to Ghost Project Flood Control #
+ser pass
+do wr
+
+int vlan 1
+ip add 192.168.1.2 255.255.255.0
+no sh
+exit
+ip default-gateway 192.168.1.1
+end
+write
+
+
+[SARAH]
+ena
+conf t
+host SARAH
+line con 0
+pass delima
+login
+line vty 0 15
+pass sheenamae
+login
+exit
+ena sec sheen
+banner motd # No to Ghost Project Flood Control #
+ser pass
+do wr
+
+int vlan 1
+ip add 172.31.0.2 255.255.0.0
+no sh
+exit
+ip default-gateway 172.31.0.1
+end
+write
+
+----------------END DEVICES----------------
+===STEP 3
+[PC1]
+192.168.1.3
+255.255.255.0
+192.168.1.1
+
+[LT1]
+192.168.1.4
+255.255.255.0
+192.168.1.1
+
+[PRINTER]
+172.16.1.3
+255.255.0.0
+172.16.1.1
+
+##do the other for end devices in ip config icon. static sya ah
+
+Note: The information listed here for MP4 is not enough since I don't have the whole info of the instructions. Better turn on your analyzation skill using the information above.
